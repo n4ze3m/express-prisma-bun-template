@@ -25,7 +25,11 @@
 
     // Read from src folder and output to dist
     "rootDir": "./src",
-    "outDir": "./dist"
+    "outDir": "./dist",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
   "include": ["./src/**/*"]
 }
