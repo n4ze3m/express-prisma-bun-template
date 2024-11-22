@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import prisma from './lib/db';
 import { readdirSync } from 'node:fs';
-import { join } from 'node:path';
+import * as path from 'node:path';
 
 const app = express();
 const router = express.Router();
@@ -24,13 +24,13 @@ app.use((req, res, next) => {
     next();
 });
 
-const routePath = join(__dirname, 'routes');
+const routePath = path.join(__dirname, 'routes');
 const routes = readdirSync(routePath);
 routes.forEach(async (file) => {
     if (file.endsWith('.ts') || file.endsWith('.js')) {
-        const path = file.split('.route.')[0];
-        const route = await import(join(routePath, file));
-        const apiPath = path.replaceAll(".route.ts", "").replaceAll(".ts", "");
+        const filePath = file.split('.route.')[0];
+        const route = await import(path.join(routePath, file));
+        const apiPath = filePath.replaceAll(".route.ts", "").replaceAll(".ts", "");
         router.use(`/${apiPath}`, route.default);
     }
 });
